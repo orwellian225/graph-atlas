@@ -2,8 +2,8 @@
     import { Portal } from "bits-ui";
 </script>
 
-<h1>Home</h1>
+<h2>Graph Viewer</h2>
 
 <Portal to="#sidebar-control-portal">
-    <h3>Home Controls</h3>
+    <h3>Graph Viewer Controls</h3>
 </Portal>

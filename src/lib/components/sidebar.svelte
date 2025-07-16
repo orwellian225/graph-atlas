@@ -26,7 +26,7 @@
                 </a>
             </li>
             <li>
-                <a href="/graph-viewer" class="flex flex-row justify-start items-center gap-2 text-xl text-center align-middle">
+                <a href="/help" class="flex flex-row justify-start items-center gap-2 text-xl text-center align-middle">
                     <Question size={32}/> Help
                 </a>
             </li>
