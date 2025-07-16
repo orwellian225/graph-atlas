@@ -33,6 +33,6 @@
         </ol>
     </nav>
 
-    <div id="sidebar-control-portal" class="w-full border-b-2 border-sky-600 pb-2">
+    <div id="sidebar-control-portal" class="w-full border-b-2 border-sky-600 pb-2 px-2">
     </div>
 </div>
