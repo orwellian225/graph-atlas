@@ -3,52 +3,53 @@
 
     import Tooltip from '$lib/components/tooltip.svelte';
     import { Portal, Separator, Button } from "bits-ui";
-    import { DownloadSimple, UploadSimple, ArrowCounterClockwise } from 'phosphor-svelte';
+    import { DownloadSimple, UploadSimple, ArrowCounterClockwise, Graph, BracketsSquare, BracketsCurly, Stack } from 'phosphor-svelte';
 
-    let graph_order = $state(page.url.searchParams.get('order') ? page.url.searchParams.get('order') : 4)
-    let graph_id = $state(page.url.searchParams.get('id') ? page.url.searchParams.get('id') : 63)
-    let graph_name = $state("NA");
-    let graph_symbol = $state("")
+    let graph = $state({
+    	order: page.url.searchParams.get('order') ? page.url.searchParams.get('order') : 4,
+     	id: page.url.searchParams.get('id') ? page.url.searchParams.get('id') : 63,
+      	name: "NA",
+       	symbol: ""
+    })
 
-    const available_properties: Array<string> = []
-    for (let i = 0; i < 1000; i += 1) {
-        available_properties.push(`Property ${i + 1}`)
-    }
+    let graph_view_text = [ "Graph", "Adjacency Matrix", "Adjacency List" ]
+    let graph_view_icon = [ Graph, BracketsCurly, BracketsSquare ]
+    let graph_view = $state(0)
+
 </script>
 
-<div class="w-full h-screen">
-    <span id="view-window" class="flex flex-row w-full h-1/2 gap-2 items-center justify-evenly">
-        <div id="graph-rendering" class="w-full h-full border-amber-500 border-2">
-        </div>
+<div class="w-full h-screen p-2">
+	<span class="flex flex-row items-center justify-center">
+		{#each graph_view_text as graph_view_item, item_idx}
+			{@const DynComponent = graph_view_icon[item_idx]}
+			{#if graph_view !== item_idx}
+				<button class="w-full border-b-2 border-zinc-200 flex flex-row items-center justify-center gap-2" onclick={() => graph_view = item_idx}>
+					<DynComponent size={28} />
+					<h2 class="text-xl text-center">{graph_view_item}</h2>
+				</button>
+			{:else}
+				<button class="w-full border-b-2 border-purple-500 flex flex-row items-center justify-center gap-2" onclick={() => {}}>
+					<DynComponent size={28} />
+					<h2 class="text-xl text-center">{graph_view_item}</h2>
+				</button>
+			{/if}
+		{/each}
+	</span>
 
-        <div id="matrix-rendering" class="w-full h-full border-amber-500 border-2">
-        </div>
-
-        <div id="definition-rendering" class="w-full h-full border-amber-500 border-2">
-        </div>
-    </span>
-
-    <span id="property-window" class="flex flex-row w-full gap-2 items-center justify-evenly">
-        <div id="property-list" class="w-1/5 h-fit border-amber-500 border-2">
-            <ol class="overflow-y-auto max-h-96">
-                {#each available_properties as property}
-                    <li>{property}</li>
-                {/each}
-            </ol>
-        </div>
+    <span id="view-window" class="flex flex-row w-full h-full gap-2 items-center justify-evenly">
     </span>
 </div>
 
 <Portal to="#sidebar-control-portal">
     <span class="flex flex-row items-start justify-between">
         <label for="graph_name" class="text-lg">Name</label>
-        <input name="graph_name" type="text" bind:value={graph_name} 
+        <input name="graph_name" type="text" bind:value={graph.name}
             class="w-32 text-right text-lg border-b-1 border-black"
         >
     </span>
     <span class="flex flex-row items-start justify-between">
         <label for="graph_symbol" class="text-lg">Symbol</label>
-        <input name="graph_symbol" type="text" bind:value={graph_symbol} 
+        <input name="graph_symbol" type="text" bind:value={graph.symbol}
             class="w-32 text-right text-lg border-b-1 border-black"
         >
     </span>
@@ -57,14 +58,14 @@
 
     <span class="flex flex-row items-start justify-between">
         <label for="graph_order" class="text-lg">Number of Vertices</label>
-        <input name="graph_order" type="number" bind:value={graph_order} 
+        <input name="graph_order" type="number" bind:value={graph.order}
             class="w-16 text-right text-lg border-b-1 border-black"
         >
     </span>
 
     <span class="flex flex-row items-start justify-between ">
         <label for="graph_id" class="text-lg">Graph ID Number</label>
-        <input name="graph_id" type="number" bind:value={graph_id}
+        <input name="graph_id" type="number" bind:value={graph.id}
             class="w-16 text-right text-lg border-b-1 border-black"
         >
     </span>
