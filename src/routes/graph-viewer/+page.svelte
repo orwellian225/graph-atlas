@@ -11,9 +11,13 @@
 
     let graph_order = $state(page.url.searchParams.get('order') !== null ? Number.parseInt(page.url.searchParams.get('order')) : 4);
     let graph_id = $state(page.url.searchParams.get('id') !== null ? Number.parseInt(page.url.searchParams.get('id')) : 63);
+    $effect(() => {
+    	if ( graph_id >= 2**(graph_order * (graph_order - 1) / 2) ) { graph_id = 2**(graph_order * (graph_order - 1) / 2) - 1 }
+     	graph_data = Graph.from_id(graph_order, graph_id);
+    })
     let graph_name = $state("NA");
     let graph_symbol = $state("");
-    let graph_data = $derived(Graph.from_id(graph_order, graph_id));
+    let graph_data = $state(Graph.from_id(graph_order, graph_id));
 
     let update_graph_view = (alternate_behaviour: boolean, graph_view_idx: number) => {
 	    if (!alternate_behaviour) {
@@ -59,12 +63,14 @@
 		{/each}
 	</span>
 
-    <span id="view-window" class="flex flex-row w-full h-1/2 gap-2 items-center justify-evenly border-2 border-amber-500">
-    	{#each active_graph_views as graph_view_idx}
-     		{@const GraphViewComponent = graph_view_windows[graph_view_idx]}
-       		<GraphViewComponent graph={graph_data} />
-	    {/each}
-    </span>
+	{#key graph_data}
+	    <span id="view-window" class="flex flex-row w-full h-1/2 gap-2 items-center justify-evenly border-2 border-amber-500">
+	    	{#each active_graph_views as graph_view_idx}
+	     		{@const GraphViewComponent = graph_view_windows[graph_view_idx]}
+	       		<GraphViewComponent graph={graph_data} />
+		    {/each}
+	    </span>
+	{/key}
 
     <span id="info-window" class="flex flex-col w-full h-fit gap-2 items-center justify-evenly border-2 border-amber-500 overflow-y-auto">
     	<h3>There's a bunch of information down here that will be useful in the future</h3>
@@ -89,7 +95,7 @@
 
     <span class="flex flex-row items-start justify-between">
         <label for="graph_order" class="text-lg">Number of Vertices</label>
-        <input name="graph_order" type="number" bind:value={graph_order}
+        <input name="graph_order" type="number" bind:value={graph_order} min={2}
             class="w-16 text-right text-lg border-b-1 border-black"
         >
     </span>
