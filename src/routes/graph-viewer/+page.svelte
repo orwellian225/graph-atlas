@@ -42,7 +42,7 @@
     ]
     let graph_view_icon = [ GraphIcon, BracketsCurly, BracketsSquare ]
     let graph_view_windows = [ VisualGraph, MatrixGraph, EdgeGraph ]
-    let active_graph_views = $state([ 0 ])
+    let active_graph_views = $state([ 0, 1, 2 ])
 </script>
 
 <div class="w-full h-screen p-2 flex flex-col gap-1">
