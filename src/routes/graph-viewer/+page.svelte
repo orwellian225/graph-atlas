@@ -21,12 +21,14 @@
 			return;
 		}
 
-		if (active_graph_views.indexOf(graph_view_idx) !== -1) {
+		const found_idx = active_graph_views.indexOf(graph_view_idx);
+		if (active_graph_views.length > 1 && found_idx !== -1) {
 			active_graph_views.splice( active_graph_views.indexOf(graph_view_idx), 1 );
 			return;
 		}
-
-		active_graph_views.push(graph_view_idx);
+		if (found_idx === -1) {
+			active_graph_views.push(graph_view_idx);
+		}
     };
     let graph_view_text = [ "Graph", "Adjacency Matrix", "Adjacency List" ]
     let graph_view_tooltip = [
